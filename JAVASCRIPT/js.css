@@ -1,0 +1,40 @@
+h1{
+    color: black;
+    text-align: center;
+}
+
+h2{
+    color: salmon;
+    background-color: beige;
+}
+
+.button{
+    background-color: burlywood;
+}
+
+body{
+    background-color: seashell;
+}
+
+div{
+
+    height: 100px;
+    width: 100px;
+    background-color: aqua;
+    border: 2px solid;
+    margin: 10px;
+}
+
+ #last-heading {
+
+    height: 200px;
+    width: 200px;
+    background-color: rgb(0, 255, 115);
+    border: 2px solid;
+    margin: 10px;
+
+}
+
+.NewClass{
+     background-color:blueviolet
+}

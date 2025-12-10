@@ -1,0 +1,369 @@
+*How JavaScript works?
+Ans-Everything in JavaScript happens inside an "execution context".
+
+Execution context has two component
+1)memory component[variable environment] 
+-This is the place where all variables and functions are stored as key value pairs. eg-{key: value ||  n:2;} 
+
+ 2)code component[Thread of execution]
+-This is the place where code is executed one line at a time
+
+Note-
+*JavaScript is a synchronous single-threaded language
+
+-Single threaded means JavaScript can execute once command at a time
+-Synchronous single-threaded that means JavaScript can execute one command at a time in a specific order.
+
+
+1. When JavaScript code is executed, Execution Context is created and it is called Global Execution Context.
+2. JavaScript program is executed in TWO PHASES inside Execution Context
+  a. MEMORY ALLOCATION PHASE - JavaScript program goes throughout the program and allocate memory of Variables and Functions declared in program.
+  b. CODE EXECUTION PHASE -  JavaScript program now goes throughout the code line by line and execute the code. 
+3. A Function is invoked when it is called and it acts as another MINI PROGRAM and creates its own Execution Context.
+4. Returns keyword return the Control back to the PREVIOUS Execution-Context where the Function is called and Execution Context of the Function is DELETED.
+5. CALL STACK maintains the ORDER of execution of Execution Contexts. It CREATES Execution Context whenever a Program starts or a Function is invoked and it pops out the Execution Context when a Function or Program ENDS.
+
+Notes:
+	• window object is created by the JS engines of the respective browsers when global execution context is created.
+	• whenever an execution context is created a "this" variable is also created.
+	• at the global level "this" points to the global object( window object in case of browsers).
+	• anything that is not inside a function is the "global space".
+	• whenever we create any variables or functions in the "global space", they get attached to the global object( window object in case of browsers).
+	
+	so to access the variables/function defined in the global space , 
+	we can use any of the below:
+		console.log(window.a);
+		console.log(a);
+		console.log(this.a)             //at the global space level, where this points to the window object
+
+1. Shortest Program in JS: Empty file. Still, browsers make global EC and global space along with Window object.
+2. Global Space: Anything that is not in a function, is in the global space.
+3. Variables present in a global space can be accessed by a "window" object. (like window.a)
+4. In global space, (this === window) object.
+
+1.Undefined is a Special Placeholder which is used to reserve memory for the variables in the memory creation phase. Even before a single line of code is executed JS engine assigns undefined to the variables.
+2.Not Defined means if we try to console or access any variable which is not declared in the code then we get Not Defined error.
+3.JS is a loosely typed language or weakly typed language means it does not attaches its variables to specific data types like in C++ and java.
+
+1. Scope of a variable is directly dependent on the lexical environment.
+2. Whenever an execution context is created, a lexical environment is created. 
+Lexical environment is the local memory along with the lexical environment of its parent. 
+Lexical as a term means in hierarchy or in sequence.
+3. Having the reference of parent's lexical environment means, 
+the child or the local function can access all the variables and functions defined in the memory space of its lexical parent.
+4. The JS engine first searches for a variable in the current local memory space, if its not found here it searches for the variable in the lexical environment of its parent, and if its still not found, then it searches that variable in the subsequent lexical environments, and the sequence goes on until the variable is found in some lexical environment or the lexical environment becomes NULL.
+5. The mechanism of searching variables in the subsequent lexical environments is known as Scope Chain. 
+If a variable is not found anywhere, then we say that the variable is not present in the scope chain.
+
+1. let and const are hoisted but its memory is allocated at other place than window which cannot be accessed before initialisation.
+2. Temporal Dead Zone exists until variable is declared and assigned a value.
+3. window.variable OR this.variable will not give value of variable defined using let or const.
+4. We cannot redeclare the same variable with let/const(even with using var the second time).
+5. const variable declaration and initialisation must be done on the same line.
+6. There are three types of error: [1] referenceError {given where variable does not have memory allocation} [2] typeError {given when we change type that is not supposed to be changed} [3] syntaxError {when proper syntax(way of writing a statement) is not used}.
+7. Use const wherever possible followed by let, Use var as little as possible(only if you have to). It helps avoid error.
+8. Initialising variables at the top is good idea, helps shrinks TDZ to zero.
+
+
+For Revision:
+Block :- It is used to combine multiple statement into one statement so that we can use it at those places where javascript expects to have single statement.
+Scope :- scope of a variable or a function is the place where these are accessible.
+Block scope :-  The variables and function present within the scope of a block section. And block follows the lexical scope chain pattern while accessing the variable.
+let and const variables are stored in block space, so it is called block-scoped but var variables can be accessed outside the block as it is stored in the Global object memory space, hence it is called Global scoped.
+
+
+Q) What is block in JavaScript?
+> multiple js statements formed in a group enclosed in curly brackets and it forms a block
+
+Q) What is need of a block/Grouping?
+> JavaScript sometimes expect to run a single statement to run, but we need to run commands with multiple statements which is only possible by block
+
+write a simple function:
+// even empty script is perfectly valid js script, what about empty brackets!!
+{
+ var a = 10;
+ let b = 20;
+ const c =30; 
+}
+
+When a js script get hoisted (a Global Execution Context) gets created 'var' listed towards 'Global environment' and other variables 'let' and 'const' declarations go to the 'Block environment' 
+This become especially important when deciding the scope of a particular variable, since b and c are located in 'Block environment' and for a as we know exists in 'Global environment' any statement out of the "Block" can access 'a' ie.  ' Variable in Global environment' and other are not!
+so when we understand the extent of Global and local environment variables and their 'Scopes' == Environment that forms the lexical hierarchy of 'Scopes' and 'Scopes' have Levels like 'Scope inside scope'
+{
+ var a = 10;
+ let b = 20;
+ const c =30; 
+ console.log(a);
+ console.log(b);
+ console.log(c);
+}
+ console.log(a);
+ console.log(b);
+ console.log(c);
+
+ o/p with debugger- 10 20 30 10  then b is not defined because blovk scope is gone
+
+
+Variable shadowing occurs when a variable declared in an inner scope has the same name as a variable in an outer scope, effectively hiding the outer variable within that scope.
+var a=100;
+{
+ var a = 10;
+ let b = 20;
+ const c =30; 
+ console.log(a);
+ console.log(b);
+ console.log(c);
+}
+console.log(a); //changed the value at same memory allocation (as var is in GEC)
+
+o/p- 10 20 30 10 
+
+let b=100
+{
+	let b=10;
+	 console.log(b);  //block scope
+}
+ console.log(b); //script scope (sepearate memory scope than Global)
+
+o/p= 10 100
+with let, b will not override as both are in different scope
+
+
+Illegal shadowing:
+
+let a = 200;
+{
+ var a =20;
+}
+
+as 'var' declaration goes to 'Global environment' and sets in Memory context, it cannot be set using 'Block environment' value Hence:    Uncaught SyntaxError: Identifier 'a' has already been declared
+
+Closure :  Function bundled with its lexical environment is known as a closure.  ---IMPPP!!!!!!
+Whenever function is returned, even if its vanished in execution context but still it remembers the reference it was pointing to. 
+Its not just that function alone it returns but the entire closure and that's where it becomes interesting
+
+function x(){
+  var a = 10;
+         function y(){
+            console.log(a);
+         }
+
+      return y;
+}
+
+var z= x();
+//Now execution context of x is vanished as soon as it returned
+
+console.log(z);
+//..........
+z();
+//still it will print 10
+//How it is able to get a  even if x is vaished:
+A function along with lexical environment forms a closure, it means inner function can access of variable from it's parent.
+When the function return from another function they still remember it's lexical scope, they remember where they are actually present
+
+
+Closure along with scope (parent + parent's parent...)
+Read : Uses of closures
+
+1. setTimeout stores its callback function in a different place and attached a timer to it, when the timer is finished it rejoins the call stack and executed.
+2. Without closure the var reference gives the latest value as it does not retain the original value but rather has the reference so any update in value after timeout will be shown.
+3. If we use let/const because they have block scope, every time a new copy of variable is attached, thus this can be done without closure.
+
+
+1.  What is Function Statement ?
+A.  A normal function that we create using Naming convention. & By this we can do the Hoisting.
+      For Ex  -  function xyz(){
+                            console.log("Function Statement");
+                       }
+
+2.  What is Function Expression ?
+A.  When we assign a function into a variable that is Function Expression. & We can not do Hoisting by this becz it acts like variable.
+      For Ex - var a = function(){
+                            console.log("Function Expression");
+                    }
+
+3.  What is Anonymous Function ?
+A.  A Function without the name is known as Anonymous Function. & It is used in a place where function are treated as value.
+      For Ex - function(){
+                     }
+		var a = function(){
+                     }
+
+4.  What is Named Function Expression ?
+A.  A function with a name is known as Named Function Expression.
+      For Ex - var a = function xyx(){
+                            console.log("Names Function Expression");
+                     }
+
+5.  Difference b/w Parameters and Arguments ?
+A.  When we creating a function  & put some variabels in this ( ) that is our Parameters.
+       For Ex - function ab( param1, param2 ){
+                              console.log("
+                      }
+       & When we call this function & pass a variabel in this ( ) that is our Arguments
+       For Ex - ab( 4, 5 );
+
+6.  What is First Class Function Or First class citizens?
+A.   The Ability to use function as value,
+*     Can be passed as an Argument,
+*     Can be executed inside a closured function &
+*     Can be taken as return form.
+       For Ex - var b = function(param){
+                             return function xyz(){
+                                     console.log(" F C F ");
+                             }
+                     } 
+
+7. Function are heart of JS. They are called first class citizens or first class functions because they have the ability to be stored in the variables, passed as parameters and arguments. They can also be returned in the function.
+
+
+1. Function that is passed on as argument to another function is called callback function.
+2. setTimeout helps turn JS which is sinhlethreaded and synchronous into asynchronous.
+3. Event listeners can also invoke closures with scope.
+4. Event listeners consume a lot of memory which can potentially slow down the website therefore it is good practice to remove if it is not used.
+
+
+what is a call back function in java script ?
+ 
+we already know that function are first class citizens in JavaScript.
+that means we can take a function and pass it to another function.
+when we a pass a function to another function, whatever the function that we are passing as an argument that we call it as call back function.
+ 
+Example:-
+ 
+function x(y) {
+    console.log("x");
+    y();
+}
+
+x(function y() {
+    console.log("y");
+});
+ 
+in the above example function y is the call back function to the function x.
+in the above example it is up to function x on when it wants to execute function y, means in the code function y will get called by function x after some time, that’s the reason we got the naming convention as call back function , these function will get called after a while back.
+ 
+setTimeout(function a() {
+    console.log("Hi")
+}, 5000)
+ 
+in the above example function a() is the call back function to the function setTimeout.
+ 
+these call back functions are very powerful in JavaScript.
+it gives us access to the whole asynchronous world in a synchronous single threaded language.
+JavaScript is a synchronous single threaded language. That means it can do one thing at a time in a single order.
+ 
+but using call backs we can do asynchronous operation in JavaScript.
+ 
+for example if any function or operation takes lot of time (may be 20 to 30 seconds),
+and if we try to execute this function using main thread (JavaScript has only one main thread), then the JavaScript won’t be able to do any other things in these 20 to 30 seconds.
+we should never block our main thread.
+that’s the reason we should always try to choose async operation which takes time.
+ 
+without the concept of call back function we won’t be able to achieve async operation in JavaScript.
+
+
+1. JS runtime environment contains all elements required to run JS.
+2. It contains JS engine, set of API's, callback queue, microtask queue, event loop.
+3. JS engine is a piece of code.
+4. Process includes Parsing ---> Compilation -----> Execution.
+5. Parsing breaks code into tokens and converts it into AST(Abstract Syntax Tree).
+6. Modern JS engine follows JIT compilation, it interprets while it optimises code as much as it can.
+       -the AST is passed to interpreter that produces a byte code and which is then being executed with the help of memory heap and call stack.
+       -compiler works on optimization of code on runtime
+
+7. Execution and Compilation are done together.
+Execution is not possible without two major components-
+call stack and memory heap, MH is the space all the variables and functions are assigned memory
+
+8. Execution has Garbage collector and other optimisation such as inlining, copy elusion, inline caching etc.
+
+Basic idea about Mark & Sweep Algo: (Used by Garbage Collector)
+It comprise of 2 phases - 
+1. Mark phase
+2. Sweep phase
+
+All objects are marked as 0 initially (at creation) and in mark phase the objects that will be accessible are marked as 1 (reachable) by a DFS graph traversal.
+
+During sweep phase, the objects marked with 0 are removed from heap memory. and also all reachable objects are again initialized with 0 (made unreachable) because the algorithm will run again.
+
+So, it's basically tracing garbage collector concept. :)
+
+1. The setTimeout function stores it in the callback queue which is executed only after call stack is empty,
+ even if setTimeout is set to 0ms. 
+2. setTimeout ensures that minimum it will take the time mentioned because it may be paused due to call stack 
+not empty.
+
+agar GEC / main thread is busy even after timer expires, them timer have to wait in callback queue and it can be more than its timeout time
+// Settimeout Trust Issue
+
+function setTime(){
+    setTimeout(()=>{
+        console.log("Callback dfunction")
+    },5000)
+}
+setTime();
+
+let startTime= new Date().getTime();
+let endDate= startTime;
+while (endDate<= startTime+10000) // Making the main threas busy even after timer expires
+{
+    endDate=new Date().getTime();
+}
+
+console.log("While expires")
+
+
+
+1. Follow DRY(Don't Repeat Yourself) principle while coding.
+2. Use function to stop writing repeating line of codes.
+3. Function that takes another function as argument(callback function) is known as Higher order functions.
+4. It is this ability that function can be stored, passed and returned,  they are called first class citizens.
+5. If we use Array.property.function-name. This function is accessible to any array in your code.
+That is call back functions are passed as  arguments to the higher order functions, 
+these abilities of functions are commonly known as first class functions
+
+1.map method is used when we want transformation of whole array.
+2.filter is used when we want to filter the array to obtain required value.
+3.reduce is used when we want to reduce the array to single value eg (max, min, avg, sum, difference etc).
+4.reduce passes two arguments one function(which includes accumulator and initial value as argument itself) and another initial value of accumulator.
+5.Homework:
+
+const output = user.reduce(function(acc, curr){
+    if (curr.age < 30){
+        acc.push(curr.firstName);
+    }
+    return acc;
+}, [ ])
+
+
+Two issues while using callbacks
+
+1-Callback hell
+when a function is passed as an argument of another function it becomes the callback function. this process continues and there are many callbacks inside another's Callback function.
+This grows the code in horizentally instead of vertically, That mechanism is known as callback hell
+
+2-Inversion of control
+The callback function is passed to another callback, because one callback function has the control of another function this way we lose the control of our code. we don't know what is happening behind the scene and the program becomes very difficult to maintain.
+That process is called Inversion of control .
+
+
+1. Before promise we used to depend on callback functions which would result in 
+1.) Callback Hell (Pyramid of doom) | 2.) Inversion of control
+2. Inversion of control is overcome by using promise.
+  2.1) A promise is an object that represents eventual completion/failure of an asynchronous operation.
+  2.2) A promise has 3 states: pending | fulfilled | rejected.
+  2.3)  As soon as promise is fulfilled/rejected => It updates the empty object which is assigned undefined in pending state.
+  2.4) A promise resolves only once and it is immutable. 
+  2.5) Using .then() we can control when we call the cb(callback) function.
+
+3. To avoid callback hell (Pyramid of doom) => We use promise chaining. This way our code expands vertically instead of horizontally. Chaining is done using '.then()'
+4. A very common mistake that developers do is not returning a value during chaining of promises. Always remember to return a value. This returned value will be used by the next .then()
+
+//In Callback hell we pass callback the function to other function,
+ in promises we attach the callback function to a promise object
+
+ Definition:  A promise is an object that represents eventual completion/failure of an asynchronous operation.
+
+ 
