@@ -1,0 +1,39 @@
+Object: entities having state and behaviour. (properties & methods)
+JS objects have a special property called prototype.
+Prototype is itslef a reference of an object having methods and entities
+
+Ex- array is an object ,****** ----typeof array is object ---********
+We can set prototype using _ _ proto _ _
+
+Class: Class is a program-code template for creating objects
+Those objects will have some state(variables) & some behaviour (functions) inside it.
+Class is the blueprint of objects
+
+class MyClass{
+    constructor() {..}
+    myMethod() {..}
+}
+
+constructor is a special method.
+Automatically invoked by new , during the creation of an object
+Purpose: To initialize the object i.e. to initialize any properties during object creation
+
+We can pass arguments to constructor as well
+
+Inheritance: passing down properties & methods from parent class to child class.
+
+class Parent {
+
+}
+
+class Child extends Parent {
+
+}
+*If Child & Parent have same method, child’s
+method will be used. [Method Overriding]
+
+Super Keyword: The super keyword is used to call the constructor of its parent class to acess the parent's properties and methods
+super( args ) // calls Parent‘s constru
+super.parentMethod( args )
+
+
